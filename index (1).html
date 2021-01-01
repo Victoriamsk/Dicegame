@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Dice game</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="form-check">
+            <label for="">Введите банк:</label>
+            <div class="d-flex mb-2">
+                <input 
+                    type="text" 
+                    class="form-control" 
+                    id="bank-id" placeholder="">
+                <button 
+                    type="button"
+                     class="btn btn-primary" onclick="onBankButton(this)">Ввести банк</button>
+            </div>
+            <div class='d-flex justify-content-between'>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="choice" id="choice1" value="1" checked>
+                    <label class="form-check-label" for="choice1">
+                      1
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="choice" id="choice2" value="2">
+                    <label class="form-check-label" for="choice2">
+                     2
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="choice" id="choice3" value="3">
+                    <label class="form-check-label" for="choice3">
+                      3
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="choice" id="choice4" value="4">
+                    <label class="form-check-label" for="choice4">
+                      4
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="choice" id="choice5" value="5">
+                    <label class="form-check-label" for="choice5">
+                      5
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="choice" id="choice6" value="6">
+                    <label class="form-check-label" for="exampleRadios6">
+                      6
+                    </label>
+                  </div>
+            <button type="button" class="btn btn-primary" onclick="onPlay()">Играть</button>
+
+            </div>
+        </div>
+        <p>Начальное значение банка: <span class="bank-value">0</span></p>
+        <p class='game-output'></p>
+    </div>
+    <script>
+      'use strict'
+
+      var bank = 0;
+      var reward = 5;
+      var fee = 10;
+
+
+      function randInt(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+      }
+
+        function onBankButton(button) {
+          // this - ссылка на объект, в рамках которого мы вызываем функцию
+          console.log(button);
+            var bankInput = document.getElementById('bank-id'); // -> input object
+            var bankValueSpan = document.querySelector('.bank-value');
+            bankValueSpan.innerText = bankInput.value;
+
+            bank = parseInt(bankInput.value);
+
+            bankInput.setAttribute('disabled', false);
+            button.setAttribute('disabled', false);
+         
+
+        }
+
+        function onPlay() {
+          var radioInput = document.querySelector('.form-check-input:checked');
+          var gameOutput = document.querySelector('.game-output');
+
+          var randomDiceNumber = randInt(1, 6);
+
+          if (radioInput.value == randomDiceNumber) {
+            bank += reward;
+            gameOutput.innerHTML += `<div class="alert alert-success" role="alert"> Совпало + ${reward} Банк: ${bank} </div>`; 
+          } else {
+            bank -= fee;
+            gameOutput.innerHTML += `<div class="alert alert-danger" role="alert"> Промах - ${fee} Банк: ${bank}</div>`;
+          }
+    
+   }
+        
+        /*
+        Задание
+        Играем в кубик со ставками ;)
+        
+        Предложить пользователю играть дальше или нет: "Играем? (y/n) "
+        Если пользователь выбрал "y" (да):
+            Предложить ввести число от 1 до 6 (guess)
+            Генерируем случайное число от 1 до 6 (dice_number)
+            Если guess совпало с dice_number:
+                Прибвляем к банку вознаграждение (reward)
+                Отображем игроку: f"Поздравляем! Держи +{reward} к счету. На счете: {bank}"
+            Иначе:
+                Снимаем с банка комиссию (fee)
+                f"Не угодали!;( -{fee} к счету. На счете: {bank}"
+            Иначе:
+            Прерываем выполнение игрового цикла
+        */
+
+
+    </script>
+</body>
+
+</html>
